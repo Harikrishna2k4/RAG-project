@@ -1,0 +1,4 @@
+echo "RAG_project/" >> .gitignore
+echo ".vscode/" >> .gitignore
+echo "__pycache__/" >> .gitignore
+echo "*.pyc" >> .gitignore
