@@ -1,0 +1,9 @@
+streamlit==1.65.0
+python-dotenv
+google-genai
+openai
+langchain-core
+langchain-chroma
+chromadb
+pymupdf==1.28.2
+llama-cloud
