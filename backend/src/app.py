@@ -199,14 +199,13 @@ def retrieve_context(user_prompt: str, top_k: int = 6) -> str:
 
 def main():
     st.set_page_config(
-        page_title="RAG Chat with PDF",
+        page_title="Chat with your PDF",
         page_icon="📄",
         layout="wide"
     )
-    st.title("RAG Chat with PDF")
+    st.title("Chat with your PDF")
     st.caption(
         f"Embeddings: Gemini ({GEMINI_EMBED_MODEL}, "
-        f"{EMBEDDING_DIMENSION} dimensions) | "
         "Vector store: ChromaDB | Chat: Groq"
     )
     if "chatbot" not in st.session_state:
@@ -232,7 +231,7 @@ def main():
         if st.session_state.get("ingest_key") != key:
             try:
                 with st.spinner(
-                    "Extracting PDF and generating Gemini embeddings..."
+                    "Extracting PDF..."
                 ):
                     with tempfile.NamedTemporaryFile(
                         suffix=".pdf",
@@ -248,7 +247,7 @@ def main():
                         def progress(done: int, total: int):
                             bar.progress(
                                 done / total,
-                                text=f"Embedding chunks: {done}/{total}"
+                                text=f"{done / total:.0%}"
                             )
                         timings = ingest_pdf(
                             suffix_path,
@@ -261,16 +260,8 @@ def main():
                             os.remove(suffix_path)
                 st.session_state["ingest_key"] = key
                 st.session_state.pop("answer", None)
-                chatbot.conversation_history = []
-                chatbot.last_context = None
                 st.success(
-                    f"PDF processed successfully: "
-                    f"{int(timings['chunks'])} chunks stored."
-                )
-                st.caption(
-                    f"Extraction: {timings['parse']:.1f}s | "
-                    f"Embedding + storage: "
-                    f"{timings['embed_and_store']:.1f}s"
+                    f"PDF processed successfully"
                 )
             except Exception as error:
                 st.error(f"PDF ingestion failed: {error}")
@@ -297,15 +288,5 @@ def main():
     if "answer" in st.session_state:
         st.subheader("Answer")
         st.write(st.session_state["answer"])
-        timings = st.session_state.get("timings", {})
-        if timings:
-            st.caption(
-                f"Retrieval: {timings['retrieve']:.1f}s | "
-                f"Groq response: {timings['llm']:.1f}s"
-            )
-        with st.expander("Show retrieved document context"):
-            st.text(
-                st.session_state.get("last_context", "")
-            )
 if __name__ == "__main__":
     main()
