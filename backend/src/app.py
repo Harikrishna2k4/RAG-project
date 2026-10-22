@@ -223,8 +223,7 @@ def main():
     )
     st.title("Chat with your PDF")
     st.caption(
-        f"Embeddings: Gemini ({GEMINI_EMBED_MODEL}, "
-        "Vector store: ChromaDB | Chat: Groq"
+        "Chat Model: Groq"
     )
     if "chatbot" not in st.session_state:
         try:
