@@ -198,6 +198,24 @@ def retrieve_context(user_prompt: str, top_k: int = 6) -> str:
 
 
 def main():
+    st.markdown("""
+        <style>
+            [data-testid="stToolbar"] {
+                visibility: hidden;
+                height: 0%;
+                position: fixed;
+            }
+            [data-testid="stAppDeployButton"] {
+                display: none;
+            }
+            header[data-testid="stHeader"] {
+                background: transparent;
+            }
+            footer {
+                visibility: hidden;
+            }
+        </style>
+    """, unsafe_allow_html=True)
     st.set_page_config(
         page_title="Chat with your PDF",
         page_icon="📄",
