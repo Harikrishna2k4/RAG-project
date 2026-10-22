@@ -16,7 +16,6 @@ from chatbot import Chatbot
 
 ENV_PATH = Path(__file__).resolve().parent / ".env"
 load_dotenv(ENV_PATH, override=True)
-
 PARSER = os.getenv("PARSER", "local").lower()
 GEMINI_EMBED_MODEL = os.getenv("GEMINI_EMBED_MODEL", "gemini-embedding-001")
 EMBEDDING_DIMENSION = int(os.getenv("EMBEDDING_DIMENSION", "768"))
@@ -25,11 +24,12 @@ CHROMA_PATH = os.getenv("CHROMA_PATH", str(Path(__file__).resolve().parent / "db
 COLLECTION_NAME = f"rag_gemini_{GEMINI_EMBED_MODEL.replace('-', '_')}_{EMBEDDING_DIMENSION}_v1"
 GROQ_MODEL = "openai/gpt-oss-120b"
 
+
 @st.cache_resource
 def get_groq_client() -> OpenAI:
-    api_key = os.getenv("LLM_API_KEY")
+    api_key = os.getenv("LLAMACLOUD_API_KEY")
     if not api_key:
-        raise ValueError("Set LLM_API_KEY in your .env file for Groq chat generation.")
+        raise ValueError("Set LLAMACLOUD_API_KEY in your .env file for Groq chat generation.")
     return OpenAI(base_url=LLM_BASE_URL, api_key=api_key, max_retries=2, timeout=60)
 
 
