@@ -28,7 +28,7 @@ GROQ_MODEL = "openai/gpt-oss-120b"
 
 @st.cache_resource
 def get_groq_client() -> OpenAI:
-    api_key = os.getenv("LLM_API_KEY")
+    api_key = st.secrets.get("LLM_API_KEY") or os.getenv("LLM_API_KEY")
     if not api_key:
         raise ValueError("Set LLM_API_KEY in your .env file for Groq chat generation.")
     return OpenAI(base_url=LLM_BASE_URL, api_key=api_key, max_retries=2, timeout=60)
